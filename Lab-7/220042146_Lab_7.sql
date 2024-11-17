@@ -48,3 +48,10 @@ CREATE TABLE Publication (
     Group_Name VARCHAR(100),
     FOREIGN KEY (Group_Name) REFERENCES Research_Group(Group_Name)
 );
+
+
+DROP TABLE IF EXISTS Publication;
+DROP TABLE IF EXISTS Project;
+DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS Faculty;
+DROP TABLE IF EXISTS Research_Group;
