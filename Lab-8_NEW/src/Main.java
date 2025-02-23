@@ -36,9 +36,9 @@ public class Main {
             // Task 3: List transactions in the last 6 months of 2021
             Statement stmt3 = con.createStatement();
             // Adjust dates based on your database's date format
-            String query3 = "SELECT * FROM TRANSACTIONS WHERE DTM BETWEEN '2002-07-01' AND '2021-12-31'";
+            String query3 = "SELECT * FROM TRANSACTIONS WHERE DTM BETWEEN '2015-12-31' AND '2021-12-31'";
             ResultSet rs3 = stmt3.executeQuery(query3);
-            System.out.println("Transactions from the last 6 months of 2021:");
+            System.out.println("Transactions from the last 6 years of 2021:");
             while (rs3.next()) {
                 // Assuming columns: T_ID, DTM, A_ID, AMOUNT, TYPE
                 int t_id = rs3.getInt("T_ID");
@@ -55,18 +55,26 @@ public class Main {
             // Task 4: Classify accounts into CIP, VIP, OP, and Others
             Statement stmt4 = con.createStatement();
             String query4 = "SELECT A_ID, " +
-                    "SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END) AS balance, " +
+                    "SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) AS totalCredit, " +
+                    "SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END) AS totalDebit, " +
                     "SUM(AMOUNT) AS totalTransacted, " +
+                    "(SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - " +
+                    " SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) AS balance, " +
                     "CASE " +
-                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) > 1000000 " +
+                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - " +
+                    "SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) > 1000000 " +
                     "AND SUM(AMOUNT) > 5000000 THEN 'CIP' " +
-                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) BETWEEN 500000 AND 900000 " +
+                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - " +
+                    "SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) BETWEEN 500000 AND 900000 " +
                     "AND SUM(AMOUNT) BETWEEN 2500000 AND 4500000 THEN 'VIP' " +
-                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) < 100000 " +
+                    "WHEN (SUM(CASE WHEN TYPE = 0 THEN AMOUNT ELSE 0 END) - " +
+                    "SUM(CASE WHEN TYPE = 1 THEN AMOUNT ELSE 0 END)) < 100000 " +
                     "AND SUM(AMOUNT) < 1000000 THEN 'OP' " +
                     "ELSE 'Other' " +
                     "END AS AccountType " +
-                    "FROM TRANSACTIONS GROUP BY A_ID";
+                    "FROM TRANSACTIONS " +
+                    "GROUP BY A_ID";
+
             ResultSet rs4 = stmt4.executeQuery(query4);
 
             // Counters for each category
