@@ -1,0 +1,104 @@
+-- Task 1.1
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Hello World');
+END;
+/
+
+-- Task 1.2
+DECLARE
+    my_name VARCHAR2(50) := 'Ahnaf';
+    my_id NUMBER := 101;
+    friend_name VARCHAR2(50) := 'Pias';
+    friend_id NUMBER := 102;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('My Name: ' || my_name || ', ID: ' || my_id);
+    DBMS_OUTPUT.PUT_LINE('Friend Name: ' || friend_name || ', ID: ' || friend_id);
+END;
+/
+
+-- Task 1.3
+DECLARE
+    num1 NUMBER := 10;
+    num2 NUMBER := 5;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Addition      : ' || (num1 + num2));
+    DBMS_OUTPUT.PUT_LINE('Subtraction   : ' || (num1 - num2));
+    DBMS_OUTPUT.PUT_LINE('Multiplication: ' || (num1 * num2));
+    DBMS_OUTPUT.PUT_LINE('Division      : ' || (num1 / num2));
+END;
+/
+
+-- Task 1.4
+DECLARE
+    mark_percentage NUMBER := 85;
+    grade VARCHAR2(10);
+BEGIN
+    IF mark_percentage >= 90 THEN
+        grade := 'A';
+    ELSIF mark_percentage >= 80 THEN
+        grade := 'B';
+    ELSIF mark_percentage >= 70 THEN
+        grade := 'C';
+    ELSIF mark_percentage >= 60 THEN
+        grade := 'D';
+    ELSE
+        grade := 'F';
+    END IF;
+    DBMS_OUTPUT.PUT_LINE('Grade: ' || grade);
+END;
+/
+
+-- Task 1.5
+DECLARE
+    student_id NUMBER := 101;
+    counter NUMBER := 1;
+BEGIN
+    WHILE counter <= 68 LOOP
+        DBMS_OUTPUT.PUT_LINE('Student ID: ' || student_id);
+        student_id := student_id + 1;
+        counter := counter + 1;
+    END LOOP;
+END;
+/
+
+
+-- Task 2
+DECLARE
+    current_year NUMBER := 2024;
+    decade_start NUMBER;
+BEGIN
+    IF MOD(current_year, 10) = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Yes');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No');
+    END IF;
+    decade_start := current_year - MOD(current_year, 10);
+    DBMS_OUTPUT.PUT_LINE('The ' || decade_start || 's');
+END;
+/
+
+-- Task 3
+DECLARE
+    num NUMBER := 2;
+    sum_primes NUMBER := 0;
+    is_prime BOOLEAN;
+    i NUMBER;
+BEGIN
+    WHILE sum_primes + num <= 20 LOOP
+        is_prime := TRUE;
+        FOR i IN 2..TRUNC(SQRT(num)) LOOP
+            IF MOD(num, i) = 0 THEN
+                is_prime := FALSE;
+                EXIT;
+            END IF;
+        END LOOP;
+        
+        IF is_prime THEN
+            DBMS_OUTPUT.PUT_LINE(num);
+            sum_primes := sum_primes + num;
+        END IF;
+        
+        num := num + 1;
+    END LOOP;
+END;
+/
